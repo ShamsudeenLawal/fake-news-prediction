@@ -1,0 +1,9 @@
+# Fake News Prediction
+
+## Dataset:
+
+[Fake News Dataset](https://storage.googleapis.com/kaggle-data-sets/2623949/4484183/bundle/archive.zip?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=gcp-kaggle-com%40kaggle-161607.iam.gserviceaccount.com%2F20260316%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20260316T073421Z&X-Goog-Expires=259200&X-Goog-SignedHeaders=host&X-Goog-Signature=523bb8d14107c44f01b665043bfb543fb4f734391d1615b73fbf5c6f14243bba39423250aed7d05783d9042fc500b096c1dc53b77f7ecc5ffef5b8c2be8e7466b8b2f8e9998664d0b4489ef58cedfb2ab8f5f3df18400750269d288302978dbef5c16030c9f177f3f036eb3a8fbd05118a3861ed0f1c2f2f3176f3b20949f8c2eec388cebebca229cc13cbe0f73d0b409d658653ab860db5ecd82b1390a72b9156260745426f848ac4d47d49bee93d054cd1f816b39477ff08372968b51446602aea566af6b758720c0e5cdd0dd3daec65b0a9fdfd821bdea77fb611beb4b3735bb52e252c995864ee2f2c090f9ebbcef845696d1ece94e58372fc6a985cf9f3)
+
+## Deployment Framework
+
+[Fastapi](https://fastapi.tiangolo.com)
