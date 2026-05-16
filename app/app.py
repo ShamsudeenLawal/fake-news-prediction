@@ -1,4 +1,5 @@
 # load packages
+from pathlib import Path
 import joblib
 import numpy as np
 import pandas as pd
@@ -10,11 +11,9 @@ from utils import extract_domain
 app = FastAPI()
 
 # load model
-@app.on_event("startup")
-def load_model():
-    # Load classifier
-    global model
-    model = joblib.load("models/classifier.joblib")
+BASE_DIR = Path(__file__).resolve().parent
+MODEL_PATH = BASE_DIR / "models" / "classifier.joblib"
+model = joblib.load(MODEL_PATH)
 
 # define Body Model
 class News(BaseModel):
@@ -57,4 +56,4 @@ def predict_batch(news: BatchNews):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=5001, log_level="info")
+    uvicorn.run(app, port=5001, log_level="info")
