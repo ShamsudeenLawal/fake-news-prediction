@@ -1,9 +1,201 @@
-# Fake News Prediction
+# 📰 Fake News Prediction System
 
-## Dataset:
+An end-to-end machine learning system for detecting fake news using Natural Language Processing (NLP) and Logistic Regression. The project includes data preprocessing, feature engineering, model training, evaluation, and deployment via FastAPI with batch and real-time prediction support.
 
-[Fake News Dataset](https://storage.googleapis.com/kaggle-data-sets/2623949/4484183/bundle/archive.zip?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=gcp-kaggle-com%40kaggle-161607.iam.gserviceaccount.com%2F20260316%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20260316T073421Z&X-Goog-Expires=259200&X-Goog-SignedHeaders=host&X-Goog-Signature=523bb8d14107c44f01b665043bfb543fb4f734391d1615b73fbf5c6f14243bba39423250aed7d05783d9042fc500b096c1dc53b77f7ecc5ffef5b8c2be8e7466b8b2f8e9998664d0b4489ef58cedfb2ab8f5f3df18400750269d288302978dbef5c16030c9f177f3f036eb3a8fbd05118a3861ed0f1c2f2f3176f3b20949f8c2eec388cebebca229cc13cbe0f73d0b409d658653ab860db5ecd82b1390a72b9156260745426f848ac4d47d49bee93d054cd1f816b39477ff08372968b51446602aea566af6b758720c0e5cdd0dd3daec65b0a9fdfd821bdea77fb611beb4b3735bb52e252c995864ee2f2c090f9ebbcef845696d1ece94e58372fc6a985cf9f3)
+---
 
-## Deployment Framework
+## 📌 Project Overview
 
-[Fastapi](https://fastapi.tiangolo.com)
+This system classifies news articles as **fake** or **real** using textual and metadata signals such as:
+
+- News title
+- Source domain extracted from URL
+
+It is built as a **production-ready ML service** with REST APIs for real-time and batch inference.
+
+---
+
+## 🧠 Problem Statement
+
+Given a news article (title + URL), predict whether the news is:
+
+- 🟥 Fake
+- 🟩 Real
+
+---
+
+## 📊 Dataset
+
+- Source: Kaggle Fake News Dataset
+- Format: CSV containing news metadata
+- Key columns:
+  - `title`
+  - `news_url`
+  - `label` (0 = fake, 1 = real)
+
+📥 Dataset Link:  
+https://storage.googleapis.com/kaggle-data-sets/2623949/4484183/bundle/archive.zip
+
+---
+
+## 🧪 Machine Learning Pipeline
+
+### 🔹 Data Preprocessing
+
+- Loaded dataset using `pandas`
+- Renamed target column (`real → label`)
+- Mapped labels:
+  - `0 → fake`
+  - `1 → real`
+- Removed duplicate entries
+- Extracted domain from `news_url`
+- Combined features:
+
+  `content = domain + " " + title`
+
+---
+
+### 🔹 Feature Engineering
+
+- TF-IDF Vectorization (`TfidfVectorizer`)
+- Input feature: combined text (domain + title)
+
+---
+
+### 🔹 Model Training
+
+- Algorithm: Logistic Regression
+- Pipeline:
+
+TF-IDF → LogisticRegression
+
+- Train/Test split: 80/20 (stratified)
+
+---
+
+### 🔹 Evaluation Metrics
+
+- Accuracy
+- Precision (real class)
+- Recall (real class)
+- F1-score (real class)
+
+---
+
+### 📊 Model Performance (Example Output)
+
+- Accuracy: 98.2%
+- Strong performance on "real" class detection
+
+---
+
+## 🚀 API Deployment (FastAPI)
+
+The model is served using FastAPI with both single and batch prediction support.
+
+---
+
+### ▶️ Start Server
+
+```bash
+python app/main.py
+```
+
+Server runs at:
+
+`http://localhost:5001`
+
+#### 📡 API Endpoints
+
+- 🏠 Root Endpoint
+  GET `/`
+
+Response:
+
+```json
+{
+  "message": "Your model is live, let's get the news verified."
+}
+```
+
+- 🔍 Single Prediction
+  POST `/predict`
+
+Request:
+
+```json
+{
+  "news_url": "https://example.com/news/article",
+  "title": "Government announces new policy on education"
+}
+```
+
+Response:
+
+```json
+{
+  "prediction": "real"
+}
+```
+
+- 📦 Batch Prediction
+  POST `/predict-batch`
+
+Request:
+
+```json
+{
+  "batch_news": [
+    {
+      "news_url": "https://example.com/news/1",
+      "title": "Breaking news headline one"
+    },
+    {
+      "news_url": "https://example.com/news/2",
+      "title": "Breaking news headline two"
+    }
+  ]
+}
+```
+
+Response:
+
+```json
+{
+  "predictions": ["fake", "real"]
+}
+```
+
+🧪 Model Testing
+
+You can test the API using request scripts:
+
+- no batch prediction
+
+```bash
+python server_prediction.py
+```
+
+- batch prediction
+
+```bash
+python batch_server_prediction.py
+```
+
+## 🧠 Tech Stack
+
+- Python
+- Scikit-learn
+- Pandas / NumPy
+- FastAPI
+- NLP (TF-IDF)
+
+## 🔧 Key Design Decisions
+
+- Combined URL domain + title improves classification signal
+- TF-IDF used for strong baseline NLP performance
+- Logistic Regression chosen for:
+  - speed
+  - interpretability
+  - strong baseline accuracy
+- Batch inference added for scalability
